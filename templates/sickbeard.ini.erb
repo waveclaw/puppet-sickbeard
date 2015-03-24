@@ -1,0 +1,90 @@
+[General]
+config_version = 6
+log_dir = Logs
+web_port = 8081
+web_host = 0.0.0.0
+web_ipv6 = 0
+web_log = 0
+web_root = ""
+web_username = <%= scope.function_hiera(['sickbeard::web::user']) %>
+web_password = <%= scope.function_hiera(['sickbeard::web::password']) %>
+anon_redirect = http://dereferer.org/?
+display_all_seasons = 1
+use_api = 1
+api_key = <%= scope.lookupvar('::sickbeard::config::apikey') %>
+enable_https = 1
+https_cert = server.crt
+https_key = server.key
+use_nzbs = 1
+use_torrents = 0
+nzb_method = sabnzbd
+usenet_retention = 500
+search_frequency = 40
+download_propers = 1
+quality_default = 3
+status_default = 5
+flatten_folders_default = 0
+provider_order = nzbs_org womble_s_index sick_beard_index oznzb usenet_crawler omgwtfnzbs
+version_notify = 0
+naming_pattern = %SN - %Sx%0E - %EN
+naming_custom_abd = 0
+naming_abd_pattern = %SN - %A-D - %EN
+naming_multi_ep = 1
+launch_browser = 0
+use_listview = 0
+metadata_xbmc = 1|1|0|1|1|0|0|0|0|0
+metadata_xbmc_12plus = 0|0|0|0|0|0|0|0|0|0
+metadata_mediabrowser = 0|0|0|0|0|0|0|0|0|0
+metadata_ps3 = 0|0|0|0|0|0|0|0|0|0
+metadata_wdtv = 0|0|0|0|0|0|0|0|0|0
+metadata_tivo = 0|0|0|0|0|0|0|0|0|0
+metadata_mede8er = 0|0|0|0|0|0|0|0|0|0
+cache_dir = cache
+root_dirs = 0|<%= scope.function_hiera(['sickbeard::root_dir']) %>
+tv_download_dir = <%= scope.function_hiera(['sickbeard::download_dir']) %>
+keep_processed_dir = 1
+move_associated_files = 0
+filter_associated_files = ""
+process_automatically = 0
+rename_episodes = 1
+create_missing_show_dirs = 0
+add_shows_wo_dir = 0
+extra_scripts = ""
+git_path = ""
+ignore_words = "german,french,core2hd,dutch,swedish,480p"
+[Blackhole]
+nzb_dir = ""
+torrent_dir = ""
+<%- searchers = scope.function_hiera(['sickbeard::searchers']) -%>
+<%- if searchers -%>
+  <%- searchers.keys.each do |searcher| -%>
+[<%= searcher %>]
+   <%- properties = searchers[searcher] -%>
+   <%- properties.keys.each do |name| -%>
+     <%= name -%> = <%= properties[name] -%>
+   <%- end -%>
+  <%- end -%>
+<%- end -%>
+[SABnzbd]
+<%- sab = scope.function_hiera(['sickbeard::sabnzbd']) -%>
+sab_username = <%= sab['username'] %>
+sab_password = <%= sab['password'] %>
+sab_apikey = <%= sab['apikey'] %>
+sab_category = tv
+sab_host = <%= sab['host'] %> 
+[Plex]
+<%- plex = scope.function_hiera(['sickbeard::plex']) -%>
+use_plex = 1
+plex_notify_onsnatch = 0
+plex_notify_ondownload = 1
+plex_update_library = 1
+plex_server_host = <%= plex['server'] %>
+plex_host = <%= plex['host'] %>
+plex_username =  <%= plex['username'] %>
+plex_password = <%=  plex['password'] %>
+[Newznab]
+newznab_data = <%= scope.function_hiera(['sickbeard::newznab_data']) %>
+[GUI]
+coming_eps_layout = banner
+coming_eps_display_paused = 0
+coming_eps_sort = date

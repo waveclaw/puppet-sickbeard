@@ -1,0 +1,20 @@
+{
+  "name": "waveclaw-sickbeard",
+  "version": "0.1.0",
+  "author": "waveclaw",
+  "summary": "Install and configure SABnzbd the Newsgroup Binary Download Daemon.",
+  "license": "Apache 2.0",
+  "source": "ssh://git@stash.waveclaw.net:7999/puppet/sickbeard.git",
+  "project_page": "https://wiki.waveclaw.net/puppet/sickbeard",
+  "issues_url": "https://jira.waveclaw.net/puppet/sickbeard",
+  "dependencies": [
+    {
+      "name": "puppetlabs-stdlib",
+      "version_requirement": ">= 1.0.0"
+    },
+    {
+      "name": "darin-zypprepo",
+      "version_requirement": ">= 1.0.2"
+    }
+  ]
+}

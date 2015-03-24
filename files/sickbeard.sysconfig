@@ -1,0 +1,5 @@
+USERNAME=sickbeard
+DATADIR=/var/lib/sickbeard/
+PIDFILE=/var/run/sickbeard.pid
+NICE=10
+OPTIONS=

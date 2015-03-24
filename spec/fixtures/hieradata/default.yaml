@@ -1,0 +1,22 @@
+---
+sickbeard::web::user: 'alice'
+sickbeard::web::password: 'bob'
+sickbeard::root_dir: '/mnt/gobo'
+sickbeard::download_dir: '/var/lib/Downloads/complete'
+sickbeard::searchers:
+  'NZBget':
+    nzbget_username: 'nzbget'
+    nzbget_password: 'foo1234'
+    nzbget_category: 'tv'
+    nzbget_host: ''
+sickbeard::sabnzbd:
+  username: 'alice'
+  password: 'bob'
+  apikey: '1234'
+  host: 'https://127.0.0.1:9090'
+sickbeard::plex:
+  host: '127.0.0.1:3005'
+  server: '127.0.0.1.:32400'
+  username: 'alice'
+  password: 'bob'
+sickbeard::newznab_data: 'Sick Beard Index|http://lolo.sickbeard.com/|0|5030,5040|1!!!NZBs.org|http://nzbs.org/||5030,5040,5070,5090|0!!!Usenet-Crawler|https://www.usenet-crawler.com/|1234|5030,5040|1!!!OzNZB|https://api.oznzb.com/|1234|5030,5040|1'
