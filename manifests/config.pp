@@ -5,12 +5,18 @@
 # (The actual sabndbz.ini file is in the profile::mediaserver module)
 #
 class sickbeard::config (
-  $sysconf = hiera('sickbeard::config::sysconf', $::sickbeard::defaults::sysconf),
-  $iniconf = hiera('sickbeard::config::iniconf', $::sickbeard::defaults::iniconf),
-  $home    = hiera('sickbeard::config::home', $::sickbeard::defaults::home),
-  $user    = hiera('sickbeard::config::user', $::sickbeard::defaults::user),
-  $group   = hiera('sickbeard::config::group', $::sickbeard::defaults::group),
-  $apikey  = hiera('sickbeard::config::apikey', $::sickbeard::defaults::apikey),
+  $sysconf = hiera('sickbeard::config::sysconf',
+    $::sickbeard::defaults::sysconf),
+  $iniconf = hiera('sickbeard::config::iniconf',
+    $::sickbeard::defaults::iniconf),
+  $home    = hiera('sickbeard::config::home',
+    $::sickbeard::defaults::home),
+  $user    = hiera('sickbeard::config::user',
+    $::sickbeard::defaults::user),
+  $group   = hiera('sickbeard::config::group',
+    $::sickbeard::defaults::group),
+  $apikey  = hiera('sickbeard::config::apikey',
+    $::sickbeard::defaults::apikey),
 ) inherits sickbeard::defaults {
   validate_hash($sysconf)
   validate_hash($iniconf)
@@ -35,26 +41,29 @@ class sickbeard::config (
   }
   $pathname = $iniconf['path']
   file { $pathname:
-    ensure => directory,
-    owner  => $user,
-    group  => $group,
-    mode   => '0750',
+    ensure    => directory,
+    owner     => $user,
+    group     => $group,
+    mode      => '0750',
+    show_diff => false,
   }
   $basename = $iniconf['file']
   $inifile = "${pathname}/${basename}"
   if has_key($iniconf, 'source') {
     file { $inifile:
-      source => $iniconf['source'],
-      owner  => $user,
-      group  => $group,
-      mode   => '0600',
+      source    => $iniconf['source'],
+      owner     => $user,
+      group     => $group,
+      mode      => '0600',
+      show_diff => false,
     }
   } elsif has_key($iniconf, 'template') {
     file { $inifile:
-      content => template($iniconf['template']),
-      owner   => $user,
-      group   => $group,
-      mode    => '0600',
+      content   => template($iniconf['template']),
+      owner     => $user,
+      group     => $group,
+      mode      => '0600',
+      show_diff => false,
     }
   } else {
     notice('No source for configuration file, none will be used.')
