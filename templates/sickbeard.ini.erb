@@ -41,7 +41,7 @@ metadata_tivo = 0|0|0|0|0|0|0|0|0|0
 metadata_mede8er = 0|0|0|0|0|0|0|0|0|0
 cache_dir = cache
 root_dirs = 0|<%= scope.lookupvar('::sickbeard::config::root') %>
-tv_download_dir = <%= scope.lookupcar('::sickbeard::config::tv_dir') %>
+tv_download_dir = <%= scope.lookupvar('::sickbeard::config::tv_dir') %>
 keep_processed_dir = 1
 move_associated_files = 0
 filter_associated_files = ""
