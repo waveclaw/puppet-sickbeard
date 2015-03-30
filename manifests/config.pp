@@ -17,6 +17,14 @@ class sickbeard::config (
     $::sickbeard::defaults::group),
   $apikey  = hiera('sickbeard::config::apikey',
     $::sickbeard::defaults::apikey),
+  $webuser = hiera('sickbeard::web::user', undef),
+  $webpass = hiera('sickbeard::web::password', undef),
+  $root    = hiera('sickbeard::root_dir', undef),
+  $tv_dir  = hiera('sickbeard::download_dir', undef),
+  $servers = hiera('sickbeard::searchvers', {}),
+  $sabnzbd = hiera('sickbeard::sabnzbd', {}),
+  $plex    = hiera('sickbeard::plex', {}),
+  $newznab = hiera('sickbeard::newznab', {}),
 ) inherits sickbeard::defaults {
   validate_hash($sysconf)
   validate_hash($iniconf)

@@ -6,8 +6,8 @@ web_host = 0.0.0.0
 web_ipv6 = 0
 web_log = 0
 web_root = ""
-web_username = <%= scope.function_hiera(['sickbeard::web::user']) %>
-web_password = <%= scope.function_hiera(['sickbeard::web::password']) %>
+web_username = <%= scope.lookupvar('::sickbeard::config::webuser') %>
+web_password = <%= scope.lookupvar('::sickbeard::config::webpass') %>
 anon_redirect = http://dereferer.org/?
 display_all_seasons = 1
 use_api = 1
@@ -40,8 +40,8 @@ metadata_wdtv = 0|0|0|0|0|0|0|0|0|0
 metadata_tivo = 0|0|0|0|0|0|0|0|0|0
 metadata_mede8er = 0|0|0|0|0|0|0|0|0|0
 cache_dir = cache
-root_dirs = 0|<%= scope.function_hiera(['sickbeard::root_dir']) %>
-tv_download_dir = <%= scope.function_hiera(['sickbeard::download_dir']) %>
+root_dirs = 0|<%= scope.lookupvar('::sickbeard::config::root') %>
+tv_download_dir = <%= scope.lookupcar('::sickbeard::config::tv_dir') %>
 keep_processed_dir = 1
 move_associated_files = 0
 filter_associated_files = ""
@@ -55,7 +55,7 @@ ignore_words = "german,french,core2hd,dutch,swedish,480p"
 [Blackhole]
 nzb_dir = ""
 torrent_dir = ""
-<%- searchers = scope.function_hiera(['sickbeard::searchers']) -%>
+<%- searchers = scope.lookupvar('::sickbeard::config::servers') -%>
 <%- if searchers -%>
   <%- searchers.keys.each do |searcher| -%>
 [<%= searcher %>]
@@ -65,15 +65,18 @@ torrent_dir = ""
    <%- end -%>
   <%- end -%>
 <%- end -%>
+<%- sab = scope.lookupvar('::sickbeard::config::sabnzbd') -%>
+<%- if sab -%>
 [SABnzbd]
-<%- sab = scope.function_hiera(['sickbeard::sabnzbd']) -%>
 sab_username = <%= sab['username'] %>
 sab_password = <%= sab['password'] %>
 sab_apikey = <%= sab['apikey'] %>
 sab_category = tv
 sab_host = <%= sab['host'] %> 
+<%-end-%>
+<%- plex = scope.lookupvar('::sickbeard::config::plex') -%>
+<%- if plex -%>
 [Plex]
-<%- plex = scope.function_hiera(['sickbeard::plex']) -%>
 use_plex = 1
 plex_notify_onsnatch = 0
 plex_notify_ondownload = 1
@@ -82,8 +85,12 @@ plex_server_host = <%= plex['server'] %>
 plex_host = <%= plex['host'] %>
 plex_username =  <%= plex['username'] %>
 plex_password = <%=  plex['password'] %>
+<%-end-%>
+<%- newznab_data = scope.lookupvar('sickbeard::newznab_data') -%>
+<%- if newznab_data -%>
 [Newznab]
-newznab_data = <%= scope.function_hiera(['sickbeard::newznab_data']) %>
+newznab_data = <%= newznab_data -%>
+<%- end -%>
 [GUI]
 coming_eps_layout = banner
 coming_eps_display_paused = 0
