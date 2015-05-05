@@ -31,9 +31,9 @@ class sickbeard::config(
     group  => $_group,
     mode   => '0750',
   }
-  file { $_dirs:
+  ensure_resource( 'file', $_dirs, {
     ensure => directory,
-  }
+  })
   if $config_file_source != undef {
     file { $_config_file:
       ensure => file,
