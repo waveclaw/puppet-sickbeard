@@ -36,7 +36,7 @@ class sickbeard (
   validate_string($webpass)
   validate_string($apikey)
   validate_string($tv_download_path)
-  validate_integer($nice)
+  #validate_integer($nice)
   validate_absolute_path($pidfile)
   validate_absolute_path($data_path)
   validate_absolute_path($root_path)
