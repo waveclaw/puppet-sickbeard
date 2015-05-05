@@ -2,78 +2,57 @@
 #
 # This class is called from sickbeard for service config.
 #
-# (The actual sabndbz.ini file is in the profile::mediaserver module)
-#
-class sickbeard::config (
-  $sysconf = hiera('sickbeard::config::sysconf',
-    $::sickbeard::defaults::sysconf),
-  $iniconf = hiera('sickbeard::config::iniconf',
-    $::sickbeard::defaults::iniconf),
-  $home    = hiera('sickbeard::config::home',
-    $::sickbeard::defaults::home),
-  $user    = hiera('sickbeard::config::user',
-    $::sickbeard::defaults::user),
-  $group   = hiera('sickbeard::config::group',
-    $::sickbeard::defaults::group),
-  $apikey  = hiera('sickbeard::config::apikey',
-    $::sickbeard::defaults::apikey),
-  $webuser = hiera('sickbeard::web::user', undef),
-  $webpass = hiera('sickbeard::web::password', undef),
-  $root    = hiera('sickbeard::root_dir', undef),
-  $tv_dir  = hiera('sickbeard::download_dir', undef),
-  $servers = hiera('sickbeard::searchvers', {}),
-  $sabnzbd = hiera('sickbeard::sabnzbd', {}),
-  $plex    = hiera('sickbeard::plex', {}),
-  $newznab = hiera('sickbeard::newznab', {}),
-) inherits sickbeard::defaults {
-  validate_hash($sysconf)
-  validate_hash($iniconf)
-  validate_string($home)
-  validate_string($user)
-  validate_string($group)
-  validate_string($apikey)
+class sickbeard::config(
+  $config_file_source       = undef,
+  $config_file_content      = undef,
+  $config_file_template     = undef,
+){
+  # used in the template
+  $_user             = $sickbeard::user_name
+  $_group            = $sickbeard::group_name
+  $_webuser          = $sickbeard::webuser
+  $_webpass          = $sickbeard::webpass
+  $_apikey           = $sickbeard::apikey
+  $_root             = $sickbeard::root_path
+  $_tv_download_path = $sickbeard::tv_download_path
+  $_servers          = $sickbeard::servers
+  $_sabnzbd          = $sickbeard::sabnzbd
+  $_plex             = $sickbeard::plex
+  $_newznab_data     = $sickbeard::newznab
+  $_config_path      = $sickbeard::data_path
+  $_config_file = "${_config_path}/config.ini"
+  $_dirs = [
+    $_config_path,
+    "${_config_path}/Logs",
+    "${_config_path}/cache",
+  ]
   File {
-    owner  => 'root',
-    group  => 'root',
-    mode   => '0640',
+    owner  => $_user,
+    group  => $_group,
+    mode   => '0750',
   }
-  $confpath = $sysconf['path']
-  $confname = $sysconf['file']
-  $conf = "${confpath}/${confname}"
-  if has_key($sysconf, 'source') {
-    file { $conf: source => $sysconf['source'], }
-  } elsif has_key($sysconf, 'template') {
-    file { $conf: content => template($sysconf['template']), }
-  } else {
-    notice('No source for configuration file, none will be used.')
+  file { $_dirs:
+    ensure => directory,
   }
-  $pathname = $iniconf['path']
-  file { $pathname:
-    ensure    => directory,
-    owner     => $user,
-    group     => $group,
-    mode      => '0750',
-    show_diff => false,
-  }
-  $basename = $iniconf['file']
-  $inifile = "${pathname}/${basename}"
-  if has_key($iniconf, 'source') {
-    file { $inifile:
-      source    => $iniconf['source'],
-      owner     => $user,
-      group     => $group,
-      mode      => '0600',
-      show_diff => false,
+  if $config_file_source != undef {
+    file { $_config_file:
+      ensure => file,
+      source => $config_file_source,
     }
-  } elsif has_key($iniconf, 'template') {
-    file { $inifile:
-      content   => template($iniconf['template']),
-      owner     => $user,
-      group     => $group,
-      mode      => '0600',
-      show_diff => false,
+  } elsif $config_file_content != undef {
+    file { $_config_file:
+      ensure  => file,
+      content => $config_file_content,
+    }
+  } elsif $config_file_template != undef {
+    file { $_config_file:
+      ensure  => file,
+      content => $config_file_template,
     }
   } else {
-    notice('No source for configuration file, none will be used.')
+    file { $_config_file:
+      ensure  => file,
+      content => template('sickbeard/sickbeard.ini.erb'),
+    }
   }
 }

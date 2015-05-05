@@ -1,4 +1,9 @@
 [General]
+web_username = <%= @_webuser %>
+web_password = <%= @_webpass %>
+api_key = <%= @_apikey %>
+root_dirs = 0|<%= @_root %>
+tv_download_dir = <%= @_tv_download_path %>
 config_version = 6
 log_dir = Logs
 web_port = 8081
@@ -6,12 +11,9 @@ web_host = 0.0.0.0
 web_ipv6 = 0
 web_log = 0
 web_root = ""
-web_username = <%= scope.lookupvar('::sickbeard::config::webuser') %>
-web_password = <%= scope.lookupvar('::sickbeard::config::webpass') %>
 anon_redirect = http://dereferer.org/?
 display_all_seasons = 1
 use_api = 1
-api_key = <%= scope.lookupvar('::sickbeard::config::apikey') %>
 enable_https = 1
 https_cert = server.crt
 https_key = server.key
@@ -40,8 +42,6 @@ metadata_wdtv = 0|0|0|0|0|0|0|0|0|0
 metadata_tivo = 0|0|0|0|0|0|0|0|0|0
 metadata_mede8er = 0|0|0|0|0|0|0|0|0|0
 cache_dir = cache
-root_dirs = 0|<%= scope.lookupvar('::sickbeard::config::root') %>
-tv_download_dir = <%= scope.lookupvar('::sickbeard::config::tv_dir') %>
 keep_processed_dir = 1
 move_associated_files = 0
 filter_associated_files = ""
@@ -55,7 +55,7 @@ ignore_words = "german,french,core2hd,dutch,swedish,480p"
 [Blackhole]
 nzb_dir = ""
 torrent_dir = ""
-<%- searchers = scope.lookupvar('::sickbeard::config::servers') -%>
+<%- searchers = @_servers -%>
 <%- if searchers -%>
   <%- searchers.keys.each do |searcher| -%>
 [<%= searcher %>]
@@ -65,7 +65,7 @@ torrent_dir = ""
    <%- end -%>
   <%- end -%>
 <%- end -%>
-<%- sab = scope.lookupvar('::sickbeard::config::sabnzbd') -%>
+<%- sab = @_sabnzbd -%>
 <%- if sab -%>
 [SABnzbd]
 sab_username = <%= sab['username'] %>
@@ -74,7 +74,7 @@ sab_apikey = <%= sab['apikey'] %>
 sab_category = tv
 sab_host = <%= sab['host'] %> 
 <%-end-%>
-<%- plex = scope.lookupvar('::sickbeard::config::plex') -%>
+<%- plex = @_plex -%>
 <%- if plex -%>
 [Plex]
 use_plex = 1
@@ -86,7 +86,7 @@ plex_host = <%= plex['host'] %>
 plex_username =  <%= plex['username'] %>
 plex_password = <%=  plex['password'] %>
 <%-end-%>
-<%- newznab_data = scope.lookupvar('sickbeard::newznab_data') -%>
+<%- newznab_data = @_newznab_data -%>
 <%- if newznab_data -%>
 [Newznab]
 newznab_data = <%= newznab_data -%>

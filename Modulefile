@@ -1,12 +1,12 @@
 name          'waveclaw-sickbeard'
 version       '0.1.0'
-source        'ssh://git@stash.waveclaw.net:7999/puppet/sickbeard.git'
+source        'https://github.com/midgetspy/Sick-Beard/'
 author        'waveclaw'
 license       'Apache 2.0'
-summary       'Install and configure SABnzbd the Newsgroup Binary Downloads Daemon.'
+summary       'Sickbeard searches for Television programs on Usenet.'
 description   ''
-project_page  'https://wiki.waveclaw.net/puppet/sickbeard'
+project_page  'https://gitbhub.com/waveclaw/puppet-sickbeard/'
 
-dependency 'puppetlabs/stdlib', '>= 1.0.0'
+dependency 'puppetlabs/stdlib'
+dependency 'puppetlabs/apt'
 dependency 'darin/zypprepo', '>= 1.0.2'
-

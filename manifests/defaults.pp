@@ -4,25 +4,31 @@
 # It sets variables according to platform.
 #
 class sickbeard::defaults {
-  $apikey = '"check https://localhost:9090/config/general/ for your apikey"'
-  $user = 'sickbeard'
-  $group = 'sickbeard'
-  $iniconf = { 
-    'file'     => 'config.ini', 
-    'path'     => '/var/lib/sickbeard',
-    'template' => 'sickbeard/sickbeard.ini.erb' 
-  }
-  $packages = 'sickbeard'
-  $services = 'sickbeard'
-  $sysconf = { 'file' => 'sickbeard', 
-    'source' => 'puppet:///modules/sickbeard/sickbeard.sysconfig' }
+  $user_name        = 'sickbeard'
+  $group_name       = 'sickbeard'
+  $data_path        = '/var/lib/sickbeard'
+  $pidfile          = '/var/run/sickbeard/sickbeard.pid'
+  $nice             = 10
+  $options          = ''
+  $webuser          = 'admin'
+  $webpass          = 'admin'
+  $apikey           =
+    '"check https://localhost:8081/home/ for your apikey"'
+  $root_path        = '/var/lib/sickbeard'
+  $tv_download_path = 'Downloads'
+  $servers          = {}
+  $sabnzbd          = {}
+  $plex             = {}
+  $newznab          = {}
+  $package_name     = 'sickbeard'
+  $service_name     = 'sickbeard'
   case $::osfamily {
     'Debian': {
-      $repos = 'ppa:jcfp/ppa'
-      $sysconf['path'] = '/etc/defaults'
+      $repo_name = 'ppa:jcfp/ppa'
+      $sysconfig_path = '/etc/defaults'
     }
     'RedHat': {
-      $repos    = [
+      $repo_name = [
         join([ 'https://dl.dropboxusercontent.com/u/14500830/SABnzbd',
           'RHEL-CentOS', $::os_maj_version], '/'),
         join([ 'http://dl.fedoraproject.org/pub/epel',
@@ -30,19 +36,20 @@ class sickbeard::defaults {
         join([ 'http://packages.atrpms.net/dist',
           "el${::os_maj_version}",'unrar','' ], '/')
       ]
-      $sysconf['path'] = '/etc/sysconfig'
+      $sysconfig_path = '/etc/sysconfig'
     }
     'Suse': {
-      $repos    = [
+      $repo_name = [
         join([ 'http://download.opensuse.org/repositories',
           'Archiving/SLE_12'],'/'),
         join([ 'http://download.opensuse.org/repositories',
           'home:/waveclaw:/HTPC/SLE_12'],'/')
       ]
-      $sysconf['path'] = '/etc/sysconfig'
+      $sysconfig_path = '/etc/sysconfig'
     }
     default: {
       fail("${::operatingsystem} not supported")
     }
   }
+
 }
